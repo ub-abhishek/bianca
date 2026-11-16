@@ -1,7 +1,19 @@
 const a=document.getElementById('song'),bs=document.querySelectorAll('[data-music]'),hint=document.getElementById('hint'),root=document.documentElement;
 const rm=matchMedia('(prefers-reduced-motion:reduce)').matches;
-function set(p){root.classList.toggle('playing',p);bs.forEach(b=>b.setAttribute('aria-pressed',p));hint.textContent=p?'Now playing. Tap to lift the needle.':'Tap the turntable to drop the needle \u266A'}
-bs.forEach(b=>b.addEventListener('click',()=>{if(!root.classList.contains('playing')){set(true);a.play().catch(()=>{hint.textContent='The needle is down. Add your song as music/song.mp3 to hear it.'})}else{a.pause();set(false)}}));
+const IDLE='Tap the turntable to drop the needle \u266A';
+/* the UI always follows what the <audio> element really does (iOS can pause or refuse at any time) */
+function ui(p){root.classList.toggle('playing',p);bs.forEach(b=>b.setAttribute('aria-pressed',p));hint.textContent=p?'Now playing. Tap to lift the needle.':IDLE}
+a.addEventListener('playing',()=>ui(true));
+a.addEventListener('pause',()=>ui(false));
+a.addEventListener('waiting',()=>{if(!a.paused)hint.textContent='Loading the song\u2026'});
+a.addEventListener('error',()=>{ui(false);hint.textContent='The song could not load. Check your connection and tap again.'});
+bs.forEach(b=>b.addEventListener('click',()=>{
+  if(!a.paused){a.pause();return}
+  if(a.error||a.networkState===3)a.load();           /* retry after a failed load */
+  hint.textContent='Loading the song\u2026';
+  const p=a.play();                                   /* must be called straight from the tap for iOS */
+  if(p&&p.catch)p.catch(e=>{ui(false);hint.textContent=e&&e.name==='NotAllowedError'?'Tap the turntable once more to start the song.':'The song could not load. Tap to try again.'});
+}));
 
 /* photo stacks: every .sw on the page is its own carousel */
 const P=[[0,0,0],[5,9,4],[-6,-9,7],[8,5,11]];
