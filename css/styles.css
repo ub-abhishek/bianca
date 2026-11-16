@@ -118,7 +118,6 @@ figure.pic{position:relative;max-width:36rem;margin:2.2rem auto}
 @keyframes fall2{from{transform:translate3d(0,-30px,0) rotate(0)}to{transform:translate3d(45px,1500px,0) rotate(540deg)}}
 .platter{will-change:transform}
 #home:not(.vis) *,#home:not(.vis) *::before,.folders:not(.vis) .fold,.folders:not(.vis) .fold::before,.sw:not(.vis) .lily{animation-play-state:paused!important}
-section:not(#home){content-visibility:auto;contain-intrinsic-size:auto 1400px}
 
 /* ---- navbar ---- */
 header.top{position:sticky;top:0;z-index:20;background:rgba(246,226,230,.96);border-bottom:1px solid rgba(142,27,63,.18);box-shadow:0 2px 12px rgba(120,30,70,.08)}
@@ -165,7 +164,7 @@ main{overflow-x:clip}
 /* ================= v2: stronger academic headings ================= */
 main{counter-reset:sec 1}              /* Home = 1, so My Beginning = 2 ... Reflection = 8 (same numbers as the requirements) */
 section:not(#home)>h2{padding-bottom:.6rem;border-bottom:3px solid var(--pk2)}
-section:not(#home):not(#references)>h2::before{counter-increment:sec;content:"Section " counter(sec);display:block;margin-bottom:.45rem;font:700 .78rem/1 Arial,sans-serif;letter-spacing:.14em;text-transform:uppercase;color:var(--pk)}
+section:not(#home):not(#references)>h2::before{content:"Section " attr(data-n);display:block;margin-bottom:.45rem;font:700 .78rem/1 Arial,sans-serif;letter-spacing:.14em;text-transform:uppercase;color:var(--pk)}
 .stagehead{margin:0 0 1.8rem;padding:1rem 1.2rem;background:var(--pk3);border-left:5px solid var(--pk);border-radius:0 12px 12px 0;font:1rem/1.5 Arial,sans-serif;color:#5e2a43}
 .stagehead .kick{margin:0 0 .6rem;font-size:1.08rem}
 .stagehead .kick b{display:block;margin-bottom:.2rem;font-size:.74rem;letter-spacing:.14em;text-transform:uppercase;color:var(--pk)}
@@ -178,14 +177,16 @@ section:not(#home):not(#references)>h2::before{counter-increment:sec;content:"Se
 /* theory cards: numbered "Theory n" + the three steps the requirements ask for */
 #theories{counter-reset:th}
 .card h3{font-size:1.75rem;line-height:1.25;color:var(--pk)}
-.card h3::before{counter-increment:th;content:"Theory " counter(th);display:block;width:max-content;margin-bottom:.8rem;padding:.42rem .8rem;border-radius:999px;background:var(--pk);color:#fff;font:700 .76rem/1 Arial,sans-serif;letter-spacing:.12em;text-transform:uppercase}
+.card h3::before{content:"Theory " attr(data-n);display:block;width:max-content;margin-bottom:.8rem;padding:.42rem .8rem;border-radius:999px;background:var(--pk);color:#fff;font:700 .76rem/1 Arial,sans-serif;letter-spacing:.12em;text-transform:uppercase}
 .card dl{counter-reset:st;margin:0}
 .card dt{margin-top:1.3rem;padding-top:1rem;border-top:1px solid #f0c4d4;font-size:1.02rem}
 .card dt:first-of-type{margin-top:0;padding-top:0;border-top:0}
-.card dt:nth-of-type(n+2)::before{counter-increment:st;content:counter(st);display:inline-block;width:1.55rem;height:1.55rem;margin-right:.55rem;border-radius:50%;background:var(--pk);color:#fff;text-align:center;line-height:1.55rem;font-size:.82rem}
+.card dt:nth-of-type(n+2)::before{content:'';display:inline-block;width:1.55rem;height:1.55rem;margin-right:.55rem;border-radius:50%;background:var(--pk);color:#fff;text-align:center;line-height:1.55rem;font-size:.82rem}
 /* timeline + reflection */
 .timeline h3{font-size:1.6rem;line-height:1.25;color:var(--pk)}
 .timeline li>.sub{display:inline-block;margin:0 0 .4rem;padding:.3rem .85rem;border-radius:999px;background:var(--pk);color:#fff;font:700 .82rem/1.2 Arial,sans-serif;letter-spacing:.05em}
 .timeline .tags{margin:.1rem 0 .6rem}
 .q h3{padding-left:.8rem;border-left:5px solid var(--pk);font-size:1.4rem;line-height:1.35;color:var(--pk)}
 @media(max-width:420px){.prose h3{font-size:1.3rem}.card h3{font-size:1.45rem}.q h3{font-size:1.2rem}}
+
+.card dt:nth-of-type(2)::before{content:'1'}.card dt:nth-of-type(3)::before{content:'2'}.card dt:nth-of-type(4)::before{content:'3'}

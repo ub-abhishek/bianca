@@ -47,5 +47,8 @@ if(!rm&&'IntersectionObserver' in window){const io=new IntersectionObserver(es=>
  menu.addEventListener('click',e=>{if(e.target.closest('a'))close()});
  document.addEventListener('keydown',e=>{if(e.key==='Escape')close()});
  document.addEventListener('click',e=>{if(!e.target.closest('header'))close()});
- if('IntersectionObserver' in window){const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting)links.forEach(a=>a.setAttribute('aria-current',a.getAttribute('href')==='#'+e.target.id))}),{rootMargin:'-30% 0px -65% 0px'});
-  links.forEach(a=>{const s=document.querySelector(a.getAttribute('href'));if(s)io.observe(s)})}}
+ const secs=links.map(a=>document.querySelector(a.getAttribute('href'))).filter(Boolean);let tick=false;
+ function spy(){tick=false;const y=innerHeight*.35;let cur=secs[0];secs.forEach(s=>{if(s.getBoundingClientRect().top<=y)cur=s});
+  if(innerHeight+scrollY>=document.documentElement.scrollHeight-6)cur=secs[secs.length-1];
+  links.forEach(a=>a.setAttribute('aria-current',a.getAttribute('href')==='#'+cur.id))}
+ addEventListener('scroll',()=>{if(!tick){tick=true;requestAnimationFrame(spy)}},{passive:true});addEventListener('resize',spy);spy();}
